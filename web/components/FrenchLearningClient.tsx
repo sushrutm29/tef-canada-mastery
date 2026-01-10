@@ -4,7 +4,7 @@ import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Check, X } from "lucide-react"
-import PerfectResponseModal from "@/components/PerfectResponseModal"
+import PerfectResponseModal from "@/components/CorrectSolutionModal"
 
 interface Expression {
   french: string
