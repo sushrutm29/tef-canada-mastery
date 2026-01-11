@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';  // TypeORM NestJS integration
 import { ConfigModule } from '@nestjs/config';    // Loads .env files
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import * as fs from 'fs';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { AppService } from './app.service';
       autoLoadEntities: true,  // Automatically finds entity files
       synchronize: process.env.NODE_ENV !== 'production',      // Auto-creates tables (DANGER in production - only for dev)
       ssl: process.env.DB_SSL === 'true' ? {
-        ca: './global-bundle.pem'
+        ca: fs.readFileSync('./global-bundle.pem').toString()
       } : false
     }),
   ],

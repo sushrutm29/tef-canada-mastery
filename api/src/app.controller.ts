@@ -9,4 +9,9 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @Get('db-test')
+  dbTest(): Promise<{ connected: boolean; time: Date }> {
+    return this.appService.dbTest();
+  }
 }
