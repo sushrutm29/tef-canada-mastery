@@ -16,7 +16,9 @@ import { AppService } from './app.service';
       database: process.env.DB_NAME,
       autoLoadEntities: true,  // Automatically finds entity files
       synchronize: process.env.NODE_ENV !== 'production',      // Auto-creates tables (DANGER in production - only for dev)
-      ssl: true
+      ssl: process.env.DB_SSL === 'true' ? {
+        ca: './global-bundle.pem'
+      } : false
     }),
   ],
   controllers: [AppController],
