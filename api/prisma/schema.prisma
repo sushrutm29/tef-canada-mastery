@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Expression {
+  id        String              @id @default(cuid())
+  french    String
+  english   String
+  articles  ArticleExpression[] // Many-to-many relation
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+}
+
+model Article {
+  id          String              @id @default(cuid())
+  prompt      String
+  content     String              @db.Text
+  blanks      Blank[]
+  expressions ArticleExpression[] // Many-to-many relation
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+}
+
+model ArticleExpression {
+  id           String     @id @default(cuid())
+  articleId    String
+  expressionId String
+  article      Article    @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  expression   Expression @relation(fields: [expressionId], references: [id], onDelete: Cascade)
+
+  @@unique([articleId, expressionId]) // Prevent duplicate pairings
+}
+
+model Blank {
+  id        String   @id @default(cuid())
+  position  Int
+  articleId String
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  options   Option[]
+  createdAt DateTime @default(now())
+}
+
+model Option {
+  id      String  @id @default(cuid())
+  text    String
+  correct Boolean
+  error   String?
+  blankId String
+  blank   Blank   @relation(fields: [blankId], references: [id], onDelete: Cascade)
+}
