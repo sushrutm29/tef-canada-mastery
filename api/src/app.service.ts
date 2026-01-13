@@ -1,19 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { PrismaService } from './prisma.service.js';
+
 
 @Injectable()
 export class AppService {
   constructor(
-    @InjectDataSource() private dataSource: DataSource
+    private prisma: PrismaService
   ) {}
 
   getHello(): string {
     return 'Hello World!';
   }
 
-  async dbTest(): Promise<{ connected: boolean; time: Date }> {
-    const result = await this.dataSource.query('SELECT NOW()');
-    return { connected: true, time: result[0].now };
+  async dbTest(): Promise<{ connected: boolean; time: Date, expressionCount: number }> {
+    const result = await this.prisma.$queryRaw<Array<{ now: Date }>>`SELECT NOW()`;
+    const count = await this.prisma.expression.count();
+
+    return { connected: true, time: result[0].now, expressionCount: count };
   }
 }

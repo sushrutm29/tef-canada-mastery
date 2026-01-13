@@ -1,28 +1,16 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';  // TypeORM NestJS integration
 import { ConfigModule } from '@nestjs/config';    // Loads .env files
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import * as fs from 'fs';
+import { AppController } from './app.controller.js';
+import { AppService } from './app.service.js';
+import { PrismaService } from './prisma.service.js';
+import { ExpressionsController } from './expressions/expressions.controller.js';
+import { ExpressionsService } from './expressions/expressions.service.js';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),  // Enables reading from .env file
-    TypeOrmModule.forRoot({  // Configures database connection
-      type: 'postgres',      // Database type
-      host: process.env.DB_HOST,     // RDS endpoint from .env
-      port: parseInt(process.env.DB_PORT || '5432'),
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-      autoLoadEntities: true,  // Automatically finds entity files and updates db accordingly
-      synchronize: process.env.NODE_ENV !== 'production',      // Auto-creates tables (DANGER in production - only for dev)
-      ssl: process.env.DB_SSL === 'true' ? {
-        ca: fs.readFileSync('./global-bundle.pem').toString()
-      } : false
-    }),
+    ConfigModule.forRoot()  // Enables reading from .env file
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, ExpressionsController],
+  providers: [AppService, PrismaService, ExpressionsService],
 })
 export class AppModule {}
