@@ -19,12 +19,15 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ~/tef-canada-mastery/api
+            git reset --hard origin/main
             git pull origin main
 
             npm ci --omit=dev
             npm run build
 
+            npm install prisma@7.2.0 --no-save
             npx prisma@7.2.0 generate
             npx prisma@7.2.0 migrate deploy
+            npm ci --omit=dev
             
             pm2 restart tef-expert-api
