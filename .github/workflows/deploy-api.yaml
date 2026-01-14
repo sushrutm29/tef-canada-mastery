@@ -22,7 +22,7 @@ jobs:
             git reset --hard origin/main
             git pull origin main
 
-            npm ci --omit=dev
+            npm ci
             npm run build
 
             npm install prisma@7.2.0 --no-save
