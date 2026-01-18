@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -13,23 +7,81 @@ datasource db {
   provider = "postgresql"
 }
 
+enum SegmentType {
+  TEXT
+  BLANK
+}
+
+model User {
+  id                  String               @id @default(cuid())
+  email               String               @unique
+  name                String?
+  articleProgress     ArticleProgress[]
+  expressionProgress  ExpressionProgress[]
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+}
+
+model ArticleProgress {
+  id        String   @id @default(cuid())
+  userId    String
+  articleId String
+  completed Boolean  @default(false)
+  score     Int?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([userId, articleId])
+}
+
+model ExpressionProgress {
+  id                  String     @id @default(cuid())
+  userId              String
+  expressionId        String
+  timesSeenInArticles Int        @default(0)
+  timesUsed           Int        @default(0)
+  lastSeenAt          DateTime   @default(now())
+  user                User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expression          Expression @relation(fields: [expressionId], references: [id], onDelete: Cascade)
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+  
+  @@unique([userId, expressionId])
+}
+
 model Expression {
-  id        String              @id @default(cuid())
-  french    String
-  english   String
-  articles  ArticleExpression[] // Many-to-many relation
-  createdAt DateTime            @default(now())
-  updatedAt DateTime            @updatedAt
+  id                 String               @id @default(cuid())
+  french             String
+  english            String
+  articles           ArticleExpression[]
+  expressionProgress ExpressionProgress[]
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
 }
 
 model Article {
-  id          String              @id @default(cuid())
-  prompt      String
-  content     String              @db.Text
-  blanks      Blank[]
-  expressions ArticleExpression[] // Many-to-many relation
-  createdAt   DateTime            @default(now())
-  updatedAt   DateTime            @updatedAt
+  id           String              @id @default(cuid())
+  prompt       String
+  published    Boolean             @default(false)
+  segments     ArticleSegment[]
+  expressions  ArticleExpression[]
+  articleProgress ArticleProgress[]
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+}
+
+model ArticleSegment {
+  id        String      @id @default(cuid())
+  articleId String
+  article   Article     @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  order     Int
+  type      SegmentType
+  content   String?
+  blank     Blank?      // ✅ Optional - can access from segment
+  
+  @@unique([articleId, order])
 }
 
 model ArticleExpression {
@@ -39,16 +91,15 @@ model ArticleExpression {
   article      Article    @relation(fields: [articleId], references: [id], onDelete: Cascade)
   expression   Expression @relation(fields: [expressionId], references: [id], onDelete: Cascade)
 
-  @@unique([articleId, expressionId]) // Prevent duplicate pairings
+  @@unique([articleId, expressionId])
 }
 
 model Blank {
-  id        String   @id @default(cuid())
-  position  Int
-  articleId String
-  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
-  options   Option[]
-  createdAt DateTime @default(now())
+  id               String         @id @default(cuid())
+  articleSegmentId String         @unique // ✅ FK + @unique for 1-1
+  articleSegment   ArticleSegment @relation(fields: [articleSegmentId], references: [id], onDelete: Cascade)
+  options          Option[]
+  createdAt        DateTime       @default(now())
 }
 
 model Option {
