@@ -23,13 +23,14 @@ jobs:
             git pull origin main
 
             npm ci --omit=dev
-            npm install @nestjs/cli --no-save
-            npm run build
-            npm uninstall @nestjs/cli
 
             npm install prisma@7.2.0 --no-save
             npx prisma@7.2.0 generate
             npx prisma@7.2.0 migrate deploy
-            npm uninstall @nestjs/cli prisma
+            npm uninstall prisma
+
+            npm install @nestjs/cli --no-save
+            npm run build
+            npm uninstall @nestjs/cli
             
             pm2 restart tef-expert-api
