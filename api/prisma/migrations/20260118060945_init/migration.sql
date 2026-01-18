@@ -1,27 +1,5 @@
-/*
-  Warnings:
-
-  - You are about to drop the column `content` on the `Article` table. All the data in the column will be lost.
-  - You are about to drop the column `articleId` on the `Blank` table. All the data in the column will be lost.
-  - You are about to drop the column `position` on the `Blank` table. All the data in the column will be lost.
-  - A unique constraint covering the columns `[articleSegmentId]` on the table `Blank` will be added. If there are existing duplicate values, this will fail.
-  - Added the required column `articleSegmentId` to the `Blank` table without a default value. This is not possible if the table is not empty.
-
-*/
 -- CreateEnum
 CREATE TYPE "SegmentType" AS ENUM ('TEXT', 'BLANK');
-
--- DropForeignKey
-ALTER TABLE "Blank" DROP CONSTRAINT "Blank_articleId_fkey";
-
--- AlterTable
-ALTER TABLE "Article" DROP COLUMN "content",
-ADD COLUMN     "published" BOOLEAN NOT NULL DEFAULT false;
-
--- AlterTable
-ALTER TABLE "Blank" DROP COLUMN "articleId",
-DROP COLUMN "position",
-ADD COLUMN     "articleSegmentId" TEXT NOT NULL;
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -62,6 +40,28 @@ CREATE TABLE "ExpressionProgress" (
 );
 
 -- CreateTable
+CREATE TABLE "Expression" (
+    "id" TEXT NOT NULL,
+    "french" TEXT NOT NULL,
+    "english" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Expression_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Article" (
+    "id" TEXT NOT NULL,
+    "prompt" TEXT NOT NULL,
+    "published" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Article_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "ArticleSegment" (
     "id" TEXT NOT NULL,
     "articleId" TEXT NOT NULL,
@@ -70,6 +70,35 @@ CREATE TABLE "ArticleSegment" (
     "content" TEXT,
 
     CONSTRAINT "ArticleSegment_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ArticleExpression" (
+    "id" TEXT NOT NULL,
+    "articleId" TEXT NOT NULL,
+    "expressionId" TEXT NOT NULL,
+
+    CONSTRAINT "ArticleExpression_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Blank" (
+    "id" TEXT NOT NULL,
+    "articleSegmentId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Blank_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Option" (
+    "id" TEXT NOT NULL,
+    "text" TEXT NOT NULL,
+    "correct" BOOLEAN NOT NULL,
+    "error" TEXT,
+    "blankId" TEXT NOT NULL,
+
+    CONSTRAINT "Option_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -83,6 +112,9 @@ CREATE UNIQUE INDEX "ExpressionProgress_userId_expressionId_key" ON "ExpressionP
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ArticleSegment_articleId_order_key" ON "ArticleSegment"("articleId", "order");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "ArticleExpression_articleId_expressionId_key" ON "ArticleExpression"("articleId", "expressionId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Blank_articleSegmentId_key" ON "Blank"("articleSegmentId");
@@ -103,4 +135,13 @@ ALTER TABLE "ExpressionProgress" ADD CONSTRAINT "ExpressionProgress_expressionId
 ALTER TABLE "ArticleSegment" ADD CONSTRAINT "ArticleSegment_articleId_fkey" FOREIGN KEY ("articleId") REFERENCES "Article"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "ArticleExpression" ADD CONSTRAINT "ArticleExpression_articleId_fkey" FOREIGN KEY ("articleId") REFERENCES "Article"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ArticleExpression" ADD CONSTRAINT "ArticleExpression_expressionId_fkey" FOREIGN KEY ("expressionId") REFERENCES "Expression"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Blank" ADD CONSTRAINT "Blank_articleSegmentId_fkey" FOREIGN KEY ("articleSegmentId") REFERENCES "ArticleSegment"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Option" ADD CONSTRAINT "Option_blankId_fkey" FOREIGN KEY ("blankId") REFERENCES "Blank"("id") ON DELETE CASCADE ON UPDATE CASCADE;
