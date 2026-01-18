@@ -5,10 +5,12 @@ import { AppService } from './app.service.js';
 import { PrismaService } from './prisma.service.js';
 import { ExpressionsController } from './expressions/expressions.controller.js';
 import { ExpressionsService } from './expressions/expressions.service.js';
+import { ArticlesModule } from './articles/articles.module.js';
 
 @Module({
   imports: [
-    ConfigModule.forRoot()  // Enables reading from .env file
+    ConfigModule.forRoot(),
+    ArticlesModule
   ],
   controllers: [AppController, ExpressionsController],
   providers: [AppService, PrismaService, ExpressionsService],
