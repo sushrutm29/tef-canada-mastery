@@ -63,6 +63,7 @@ model Expression {
 
 model Article {
   id           String              @id @default(cuid())
+  title        String              @default("")
   prompt       String
   published    Boolean             @default(false)
   segments     ArticleSegment[]

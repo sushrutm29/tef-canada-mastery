@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button"
-import { X } from "lucide-react"
+"use client"
+
 import { useEffect } from "react"
 
 interface Option {
@@ -25,7 +25,12 @@ interface Props {
   articleSegments: ArticleSegment[]
 }
 
-export default function PerfectResponseModal({ isOpen, onClose, articlePrompt, articleSegments }: Props) {
+export default function CorrectSolutionModal({
+  isOpen,
+  onClose,
+  articlePrompt,
+  articleSegments,
+}: Props) {
   // Prevent background scroll when modal is open
   useEffect(() => {
     if (isOpen) {
@@ -43,57 +48,48 @@ export default function PerfectResponseModal({ isOpen, onClose, articlePrompt, a
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
-        className="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-lg bg-white p-6 shadow-xl"
+        className="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-3xl font-bold text-blue-900">Correct Solution</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
-            <X className="h-6 w-6" />
-          </button>
+        {/* Header */}
+        <div className="p-6 border-b border-slate-700">
+          <h2 className="text-xl font-bold text-white">Correct Solution</h2>
         </div>
 
-        <div className="mb-4 rounded-lg bg-blue-50 p-4">
-          <h3 className="mb-2 text-xl font-semibold text-blue-900">Question:</h3>
-          <p className="text-base text-blue-800">{articlePrompt}</p>
-        </div>
+        {/* Content */}
+        <div className="p-6 overflow-y-auto max-h-[60vh]">
+          {/* Question */}
+          <div className="mb-4 p-4 bg-slate-800 rounded-lg">
+            <p className="text-slate-300 text-sm">{articlePrompt}</p>
+          </div>
 
-        <div className="rounded-lg bg-green-50 p-4">
-          <h3 className="mb-3 text-xl font-semibold text-green-900">Perfect Answer:</h3>
-          <div className="space-y-1 text-lg leading-relaxed text-gray-800">
-            {articleSegments.map((segment, index) => {
-              if (segment.text) {
-                return (
-                  <span key={index} className="whitespace-pre-wrap">
-                    {segment.text}
+          {/* Perfect Answer */}
+          <div className="text-slate-200 leading-relaxed whitespace-pre-wrap">
+            {articleSegments.map((segment, index) => (
+              <span key={index}>
+                {segment.text && <span>{segment.text}</span>}
+                {segment.blank && (
+                  <span className="text-green-400 font-medium">
+                    {segment.blank.options.find((o) => o.correct)?.text}
                   </span>
-                )
-              }
-
-              if (segment.blank) {
-                const blank = segment.blank
-                const correctOption = blank.options.find((opt) => opt.correct)
-
-                return (
-                  <span key={index} className="font-semibold text-green-700">
-                    {correctOption?.text}
-                  </span>
-                )
-              }
-
-              return null
-            })}
+                )}
+              </span>
+            ))}
           </div>
         </div>
 
-        <div className="mt-6 flex justify-end">
-          <Button onClick={onClose} className="bg-blue-600 px-6 py-3 text-white hover:bg-blue-700">
+        {/* Footer */}
+        <div className="p-6 border-t border-slate-700">
+          <button
+            onClick={onClose}
+            className="w-full py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition"
+          >
             Close
-          </Button>
+          </button>
         </div>
       </div>
     </div>
