@@ -29,7 +29,7 @@ export default function Sidebar({ isOpen }: SidebarProps) {
           </div>
           <div>
             <h1 className="text-xl font-bold text-white">TEF Canada</h1>
-            <p className="text-xs text-slate-400">Mastery</p>
+            <p className="text-xs text-slate-400">Expert</p>
           </div>
         </div>
       </div>

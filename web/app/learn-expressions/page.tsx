@@ -23,7 +23,7 @@ async function getArticles(): Promise<{ id: string; title: string; prompt: strin
 
     return articles.map((article) => ({
       id: article.id,
-      title: article.title || `Article ${article.id.slice(0, 6)}`,
+      title: article.title || `Article`,
       prompt: article.prompt,
     }))
   } catch (error) {

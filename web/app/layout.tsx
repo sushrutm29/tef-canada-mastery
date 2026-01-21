@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TEF Canada Mastery",
+  title: "TEF Canada Expert",
   description: "Master French expressions for TEF Canada exam",
 };
 
