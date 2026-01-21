@@ -52,16 +52,16 @@ export default function CorrectSolutionModal({
       onClick={onClose}
     >
       <div
-        className="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden"
+        className="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full max-h-[80vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-6 border-b border-slate-700">
+        <div className="p-6 border-b border-slate-700 shrink-0">
           <h2 className="text-xl font-bold text-white">Correct Solution</h2>
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[60vh]">
+        <div className="p-6 overflow-y-auto flex-1 min-h-0">
           {/* Question */}
           <div className="mb-4 p-4 bg-slate-800 rounded-lg">
             <p className="text-slate-300 text-sm">{articlePrompt}</p>
@@ -83,7 +83,7 @@ export default function CorrectSolutionModal({
         </div>
 
         {/* Footer */}
-        <div className="p-6 border-t border-slate-700">
+        <div className="p-6 border-t border-slate-700 shrink-0">
           <button
             onClick={onClose}
             className="w-full py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition"

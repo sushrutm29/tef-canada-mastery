@@ -145,13 +145,13 @@ export default function LearnExpressionsExercise({
               const selectedOption = blank.options.find((opt) => opt.text === selections[blank.id])
 
               return (
-                <span key={index} className="inline-block align-middle">
+                <span key={index} className="inline-flex items-center align-baseline">
                   <select
                     value={selections[blank.id] || ""}
                     onChange={(e) => handleSelect(blank.id, e.target.value)}
                     disabled={submitted}
                     style={{ width: "140px" }}
-                    className={`mx-1 px-1 py-1 rounded border-2 text-xs font-medium transition-colors cursor-pointer ${
+                    className={`mx-1 px-1 py-0.5 rounded border-2 text-xs font-medium transition-colors cursor-pointer align-baseline ${
                       submitted
                         ? isCorrect
                           ? "border-green-400 bg-green-500/20 text-green-200"
@@ -171,9 +171,9 @@ export default function LearnExpressionsExercise({
 
                   {/* Error feedback with tooltip */}
                   {submitted && !isCorrect && (
-                    <span className="group relative inline-flex items-center ml-1">
-                      <span className="p-1 bg-red-500/20 rounded">
-                        <X className="w-4 h-4 text-red-400" />
+                    <span className="group relative inline-flex items-center align-baseline ml-1">
+                      <span className="p-0.5 bg-red-500/20 rounded">
+                        <X className="w-3.5 h-3.5 text-red-400" />
                       </span>
                       <span className="invisible group-hover:visible absolute z-20 left-0 top-full mt-2 w-72 p-3 bg-slate-800 border border-slate-700 rounded-lg shadow-xl text-sm">
                         <div className="flex items-center gap-2 text-red-400 mb-2">
@@ -195,8 +195,8 @@ export default function LearnExpressionsExercise({
 
                   {/* Correct feedback */}
                   {submitted && isCorrect && (
-                    <span className="inline-flex items-center ml-1 p-1 bg-green-500/20 rounded">
-                      <Check className="w-4 h-4 text-green-400" />
+                    <span className="inline-flex items-center align-baseline ml-1 p-0.5 bg-green-500/20 rounded">
+                      <Check className="w-3.5 h-3.5 text-green-400" />
                     </span>
                   )}
                 </span>

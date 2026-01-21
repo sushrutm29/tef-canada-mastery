@@ -1,6 +1,6 @@
 "use client"
 
-import { BookOpen, FileText, Headphones, Mic, Lock, ChevronRight } from "lucide-react"
+import { FileText, Headphones, Mic, Lock, ChevronRight } from "lucide-react"
 import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -23,15 +23,13 @@ export default function Sidebar({ isOpen }: SidebarProps) {
     >
       {/* Logo */}
       <div className="p-6 border-b border-slate-800">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-            <BookOpen className="w-6 h-6 text-white" />
-          </div>
+        <Link href="/" className="flex items-center gap-3">
+          <span className="text-4xl">🍁</span>
           <div>
             <h1 className="text-xl font-bold text-white">TEF Canada</h1>
             <p className="text-xs text-slate-400">Expert</p>
           </div>
-        </div>
+        </Link>
       </div>
 
       {/* Navigation */}
