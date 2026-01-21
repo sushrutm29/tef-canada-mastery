@@ -94,7 +94,7 @@ export default function LearnExpressionsExercise({
         </Link>
         <div>
           <h1 className="text-2xl font-bold text-white">{articleTitle || "Article"}</h1>
-          <p className="text-slate-400 text-sm">Fill in the blanks with the correct expressions</p>
+          <p className="text-slate-400 text-sm">Study these expressions and complete the article below</p>
         </div>
       </div>
 
@@ -213,7 +213,7 @@ export default function LearnExpressionsExercise({
             <button
               onClick={handleSubmit}
               disabled={completedBlanks < totalBlanks}
-              className="px-8 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-700 disabled:text-slate-500 text-white font-medium rounded-lg transition"
+              className="px-8 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed text-white font-medium rounded-lg transition cursor-pointer"
             >
               Submit
             </button>
@@ -221,13 +221,13 @@ export default function LearnExpressionsExercise({
             <>
               <button
                 onClick={() => setShowModal(true)}
-                className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition"
+                className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition cursor-pointer"
               >
                 View Correct Solution
               </button>
               <button
                 onClick={handleReset}
-                className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white font-medium rounded-lg transition"
+                className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white font-medium rounded-lg transition cursor-pointer"
               >
                 Restart
               </button>

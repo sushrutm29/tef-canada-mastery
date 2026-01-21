@@ -86,7 +86,7 @@ export default function CorrectSolutionModal({
         <div className="p-6 border-t border-slate-700 shrink-0">
           <button
             onClick={onClose}
-            className="w-full py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition"
+            className="w-full py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition cursor-pointer"
           >
             Close
           </button>

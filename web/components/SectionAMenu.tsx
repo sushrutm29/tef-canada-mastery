@@ -15,7 +15,7 @@ export default function SectionAMenu() {
         >
           <FileText className="w-8 h-8 text-blue-400 mb-3" />
           <div className="text-lg font-semibold text-white mb-2">Learn Expressions</div>
-          <div className="text-sm text-slate-400">Master key phrases with fill-in-the-blanks</div>
+          <div className="text-sm text-slate-400">Master key phrases in context</div>
         </Link>
 
         {/* AI Guided Builder - Coming Soon */}

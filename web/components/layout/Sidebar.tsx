@@ -7,9 +7,10 @@ import { usePathname } from "next/navigation"
 
 interface SidebarProps {
   isOpen: boolean
+  onClose: () => void
 }
 
-export default function Sidebar({ isOpen }: SidebarProps) {
+export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const [writingExpanded, setWritingExpanded] = useState(true)
   const pathname = usePathname()
 
@@ -23,11 +24,11 @@ export default function Sidebar({ isOpen }: SidebarProps) {
     >
       {/* Logo */}
       <div className="p-6 border-b border-slate-800">
-        <Link href="/" className="flex items-center gap-3">
+        <Link href="/" onClick={onClose} className="flex items-center gap-3 cursor-pointer">
           <span className="text-4xl">🍁</span>
           <div>
             <h1 className="text-xl font-bold text-white">TEF Canada</h1>
-            <p className="text-xs text-slate-400">Expert</p>
+            <p className="text-xs text-slate-300">Expert</p>
           </div>
         </Link>
       </div>
