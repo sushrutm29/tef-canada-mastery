@@ -54,6 +54,7 @@ async function main() {
   // Create article
   const article = await prisma.article.create({
     data: {
+      title: "Mountain Wedding Quest",
       prompt: "Un groupe de 20 couples escaladait une montagne pour se marier ensemble dans le cadre d'une quête.",
       published: true,
       expressions: {
