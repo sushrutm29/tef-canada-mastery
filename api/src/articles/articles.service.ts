@@ -50,4 +50,37 @@ export class ArticlesService {
       },
     });
   }
+
+  async findBySlug(slug: string) {
+    // Convert slug to title: "formal-greetings" -> "formal greetings"
+    // Then match case-insensitively against stored title "Formal Greetings"
+    const titleFromSlug = slug.replace(/-/g, ' ');
+
+    return this.prisma.article.findFirst({
+      where: {
+        title: {
+          equals: titleFromSlug,
+          mode: 'insensitive',
+        },
+        published: true,
+      },
+      include: {
+        segments: {
+          orderBy: { order: 'asc' },
+          include: {
+            blank: {
+              include: {
+                options: true,
+              },
+            },
+          },
+        },
+        expressions: {
+          include: {
+            expression: true,
+          },
+        },
+      },
+    });
+  }
 }

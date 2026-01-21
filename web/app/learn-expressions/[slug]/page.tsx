@@ -59,7 +59,7 @@ interface ApiArticle {
   expressions: ApiExpression[]
 }
 
-async function getArticleData(id: string): Promise<{
+async function getArticleData(slug: string): Promise<{
   articleId: string
   articleTitle: string
   expressions: Expression[]
@@ -69,7 +69,7 @@ async function getArticleData(id: string): Promise<{
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"
 
   try {
-    const res = await fetch(`${apiUrl}/articles/${id}`, {
+    const res = await fetch(`${apiUrl}/articles/slug/${slug}`, {
       next: { revalidate: 60 },
     })
 
@@ -128,12 +128,12 @@ async function getArticleData(id: string): Promise<{
 }
 
 interface PageProps {
-  params: Promise<{ id: string }>
+  params: Promise<{ slug: string }>
 }
 
 export default async function LearnExpressionsExercisePage({ params }: PageProps) {
-  const { id } = await params
-  const data = await getArticleData(id)
+  const { slug } = await params
+  const data = await getArticleData(slug)
 
   if (!data) {
     notFound()

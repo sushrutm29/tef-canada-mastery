@@ -8,6 +8,10 @@ interface Article {
   prompt: string
 }
 
+function titleToSlug(title: string): string {
+  return title.toLowerCase().replace(/\s+/g, "-")
+}
+
 interface ArticleListProps {
   articles: Article[]
 }
@@ -36,7 +40,7 @@ export default function ArticleList({ articles }: ArticleListProps) {
         {articles.map((article) => (
           <Link
             key={article.id}
-            href={`/learn-expressions/${article.id}`}
+            href={`/learn-expressions/${titleToSlug(article.title)}`}
             className="w-full rounded-xl bg-slate-900 border border-slate-800 p-5 text-left transition hover:border-blue-500/50 block"
           >
             <div className="flex items-start justify-between">
