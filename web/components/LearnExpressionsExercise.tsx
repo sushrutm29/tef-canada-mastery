@@ -77,7 +77,7 @@ export default function LearnExpressionsExercise({
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-8">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
       {/* Breadcrumb */}
       <Breadcrumb
         items={[
@@ -93,7 +93,7 @@ export default function LearnExpressionsExercise({
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-white">{articleTitle || "Article"}</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-white">{articleTitle || "Article"}</h1>
           <p className="text-slate-400 text-sm">Study these expressions and complete the article below</p>
         </div>
       </div>
@@ -208,12 +208,12 @@ export default function LearnExpressionsExercise({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-center gap-4">
+        <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
           {!submitted ? (
             <button
               onClick={handleSubmit}
               disabled={completedBlanks < totalBlanks}
-              className="px-8 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed text-white font-medium rounded-lg transition cursor-pointer"
+              className="w-full sm:w-auto px-8 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed text-white font-medium rounded-lg transition cursor-pointer"
             >
               Submit
             </button>
@@ -221,13 +221,13 @@ export default function LearnExpressionsExercise({
             <>
               <button
                 onClick={() => setShowModal(true)}
-                className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition cursor-pointer"
+                className="w-full sm:w-auto px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition cursor-pointer"
               >
                 View Correct Solution
               </button>
               <button
                 onClick={handleReset}
-                className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white font-medium rounded-lg transition cursor-pointer"
+                className="w-full sm:w-auto px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white font-medium rounded-lg transition cursor-pointer"
               >
                 Restart
               </button>

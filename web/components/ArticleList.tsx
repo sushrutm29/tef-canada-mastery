@@ -18,7 +18,7 @@ interface ArticleListProps {
 
 export default function ArticleList({ articles }: ArticleListProps) {
   return (
-    <div className="max-w-5xl mx-auto px-6 py-8">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
       <Breadcrumb
         items={[
           { label: "Section A", href: "/" },
@@ -31,7 +31,7 @@ export default function ArticleList({ articles }: ArticleListProps) {
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-white">Learn Expressions</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-white">Learn Expressions</h1>
           <p className="text-slate-400 text-sm">Choose an article to practice</p>
         </div>
       </div>
