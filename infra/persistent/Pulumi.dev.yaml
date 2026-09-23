@@ -1,0 +1,5 @@
+config:
+  aws:region: us-east-1
+  tef-persistent:domain: tefcanadaexpert.com
+  tef-persistent:dbPassword:
+    secure: AAABABJ3U9CwlMIETeNK+27kH+Gz6w7AtcyKhBv9HD4grMp4pfx+CqQR

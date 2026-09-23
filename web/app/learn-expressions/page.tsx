@@ -8,7 +8,7 @@ interface ApiArticle {
 }
 
 async function getArticles(): Promise<{ id: string; title: string; prompt: string }[]> {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"
+  const apiUrl = process.env.API_URL || "http://localhost:4000"
 
   try {
     const res = await fetch(`${apiUrl}/articles`, {

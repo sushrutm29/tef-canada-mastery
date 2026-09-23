@@ -66,7 +66,7 @@ async function getArticleData(slug: string): Promise<{
   articlePrompt: string
   articleSegments: ArticleSegment[]
 } | null> {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"
+  const apiUrl = process.env.API_URL || "http://localhost:4000"
 
   try {
     const res = await fetch(`${apiUrl}/articles/slug/${slug}`, {
