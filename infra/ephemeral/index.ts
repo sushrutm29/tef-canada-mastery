@@ -216,6 +216,43 @@ new aws.lb.ListenerRule("tef-api-rule", {
 });
 
 // ---------------------------------------------------------------
+// ROUTE 53 — point the domain at the ALB (alias A records)
+// root, www, and api all resolve to the load balancer.
+// ---------------------------------------------------------------
+const rootRecord = new aws.route53.Record("tef-alias-root", {
+  zoneId: zoneId,
+  name: domainName,
+  type: "A",
+  aliases: [{
+    name: alb.dnsName,
+    zoneId: alb.zoneId,
+    evaluateTargetHealth: true,
+  }],
+});
+
+const wwwRecord = new aws.route53.Record("tef-alias-www", {
+  zoneId: zoneId,
+  name: pulumi.interpolate`www.${domainName}`,
+  type: "A",
+  aliases: [{
+    name: alb.dnsName,
+    zoneId: alb.zoneId,
+    evaluateTargetHealth: true,
+  }],
+});
+
+const apiRecord = new aws.route53.Record("tef-alias-api", {
+  zoneId: zoneId,
+  name: pulumi.interpolate`api.${domainName}`,
+  type: "A",
+  aliases: [{
+    name: alb.dnsName,
+    zoneId: alb.zoneId,
+    evaluateTargetHealth: true,
+  }],
+});
+
+// ---------------------------------------------------------------
 // FARGATE — task definitions + services (the running containers)
 // ---------------------------------------------------------------
 const dbUrlArn = pulumi.interpolate`arn:aws:ssm:${region}:${accountId}:parameter${dbUrlParamName}`;
@@ -277,7 +314,7 @@ const webTaskDef = new aws.ecs.TaskDefinition("tef-web-task", {
 });
 
 // --- API service ---
-const apiService = new aws.ecs.Service("tef-api-service", {
+new aws.ecs.Service("tef-api-service", {
   name: "tef-api",
   cluster: cluster.arn,
   taskDefinition: apiTaskDef.arn,
@@ -297,7 +334,7 @@ const apiService = new aws.ecs.Service("tef-api-service", {
 }, { dependsOn: [httpsListener] });
 
 // --- WEB service ---
-const webService = new aws.ecs.Service("tef-web-service", {
+new aws.ecs.Service("tef-web-service", {
   name: "tef-web",
   cluster: cluster.arn,
   taskDefinition: webTaskDef.arn,
