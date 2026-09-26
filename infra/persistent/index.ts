@@ -157,7 +157,7 @@ const certValidation = new aws.acm.CertificateValidation("tef-cert-validated", {
   validationRecordFqdns: validationRecords.map(r => r.fqdn),
 });
 
-const dbConnectionString = pulumi.interpolate`postgresql://${dbUser}:${dbPassword}@${db.address}:5432/${dbName}`;
+const dbConnectionString = pulumi.interpolate`postgresql://${dbUser}:${dbPassword}@${db.address}:5432/${dbName}?sslmode=no-verify`;
 
 // ---------------------------------------------------------------
 // SSM PARAMETER — DATABASE_URL for Fargate tasks
